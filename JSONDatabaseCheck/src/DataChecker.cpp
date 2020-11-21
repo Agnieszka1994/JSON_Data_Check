@@ -4,13 +4,11 @@
 #if 1
 #define LOG(x,y) std::cout <<x<<"__"<<y<< std::endl;
 #else
-
 #endif // 0
 
 namespace datachecker
 {
     using Key = TimetableUnit::Keys;
-
 
     datachecker::DataChecker::DataChecker(std::string& data)
     {

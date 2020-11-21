@@ -1,4 +1,3 @@
-
 #include "TimetableUnit.h"
 #include "DataChecker.h"
 
@@ -89,23 +88,7 @@ int main() {
     ])###";
 
 
-    //json series = json::parse(testString);
-    ////vector<TimetableUnit> time_vec(series);
-    //for (auto j : series) {
-    //    TimetableUnit tmp{
-    //        j["bus_id"].get<decltype(TimetableUnit::bus_id)>(),
-    //        j["stop_id"].get<decltype(TimetableUnit::stop_id)>(),
-    //        j["stop_name"].get<decltype(TimetableUnit::stop_name)>(),
-    //        j["next_stop"].get<decltype(TimetableUnit::next_stop)>(),
-    //        j["stop_type"].get<decltype(TimetableUnit::stop_type)>(),
-    //        j["a_time"].get<decltype(TimetableUnit::a_time)>()
-    //    };
-    //    std::cout << tmp << std::endl;
-    //    //std::cout << timetable.get<TimetableUnit>() << std::endl;
-    //}
-
     DataChecker testowy(testString);
 
-    //std::cout << series;
 
-}//
+}

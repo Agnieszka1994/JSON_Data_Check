@@ -93,9 +93,6 @@ int main() {
 
 
     DataChecker testowy(testString);
-    //testowy.printTimetables();
-    testowy.buildMapOfLines();
-    //testowy.printLines();
     testowy.checkSyntax();
     testowy.printLinesInfo();
     testowy.printSpecialStops();

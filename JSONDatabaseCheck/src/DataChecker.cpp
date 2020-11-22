@@ -65,11 +65,8 @@ namespace datachecker
 
     void DataChecker::printSpecialStops()
     {
-        // start stops
         printStartStops();
-        // transfer stops
-
-        // finnish stops
+        printTransferStops();
         printFinishStops();
     }
 
@@ -94,6 +91,21 @@ namespace datachecker
                     break; 
                 }
             }  
+        }
+    }
+
+    void DataChecker::findTransferlStops()
+    {
+        std::set<int> stopsTmp;
+        for (const auto &line : lines) {
+            for (const auto &stop : line.second.stops) {
+                if (stopsTmp.find(stop.second.stop_id) == stopsTmp.end()){
+                    stopsTmp.insert(stop.second.stop_id);
+                }
+                else{
+                    TransferStops.insert({ stop.second.stop_id, stop.second.stop_name});
+                }
+            }
         }
     }
 
@@ -208,6 +220,8 @@ namespace datachecker
         }
         else {
             std::cout << SYNTAX_CORRECT;
+            buildMapOfLines();
+            findTransferlStops();
         }
     }
 
@@ -221,6 +235,11 @@ namespace datachecker
     {
         std::cout << "Finish stops: ";
         printStops(FinishStops);
+    }
+    void DataChecker::printTransferStops()
+    {
+        std::cout << "Transfer stops: ";
+        printStops(TransferStops);
     }
     void DataChecker::printStops(std::unordered_map<int, std::string> stops) {
         std::cout << stops.size() << " [";

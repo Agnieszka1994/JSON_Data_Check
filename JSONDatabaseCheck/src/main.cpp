@@ -1,6 +1,4 @@
-#include "TimetableUnit.h"
-#include "DataChecker.h"
-
+#include "MainMenu.h"
 
 using namespace datachecker;
 int main() {
@@ -91,9 +89,6 @@ int main() {
     }
     ])###";
 
-
-    DataChecker testowy(testString);
-    testowy.checkSyntax();
-    testowy.printLinesInfo();
-    testowy.printSpecialStops();
+    MainMenu menu(testString);
+    menu.run();
 }

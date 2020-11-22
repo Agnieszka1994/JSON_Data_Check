@@ -12,7 +12,7 @@ namespace datachecker
     const std::string INCORRECT_SYNTAX{ "Incorrect Synatx!\n Stop_name, Stop_type or Time format did not meet the requirements!\n" };
     const std::string SYNTAX_CORRECT{"Syntax correct!\n"};
     const std::string LINE_NAMES{ "Line names and number of stops:\n" };
-
+    const std::string MISSING_STOP{ "There is no start or end stop for the line: " };
     datachecker::DataChecker::DataChecker(std::string& data)
     {
         uploadData(data);
@@ -32,6 +32,16 @@ namespace datachecker
     void DataChecker::uploadData(std::string& data)
     {
         series = json::parse(data);
+    }
+
+    void DataChecker::checkSpecialStops()
+    {
+        for (auto line : lines) {
+            if (line.second.startStop == -1 || line.second.finalStop == -1) {
+                std::string msg = MISSING_STOP + std::to_string(line.second.lineId);
+                throw std::logic_error(msg);
+            }
+        }
     }
 
     void datachecker::DataChecker::printErrors()
@@ -220,8 +230,6 @@ namespace datachecker
         }
         else {
             std::cout << SYNTAX_CORRECT;
-            buildMapOfLines();
-            findTransferlStops();
         }
     }
 

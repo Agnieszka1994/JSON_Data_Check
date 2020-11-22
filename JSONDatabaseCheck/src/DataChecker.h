@@ -1,6 +1,5 @@
 #pragma once
 #include "TimetableUnit.h"
-#include "MainMenu.h"
 #include "BussLine.h"
 #include <numeric>
 #include <stdexcept>
@@ -21,8 +20,6 @@ namespace datachecker
         enum Error { BusId, StopId, StopName, NextStop, StopType, Time, end };
         void printErrors();
 
-        friend class MainMenu;
-
         static std::map<Error, const char*> dict;
 
     public:
@@ -34,7 +31,7 @@ namespace datachecker
         void printSpecialStops();
        
     private:
-
+        friend class MainMenu;
         void uploadData(std::string& data);
         void checkSpecialStops();
         void buildMapOfLines();

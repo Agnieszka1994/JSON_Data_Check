@@ -1,6 +1,7 @@
 #pragma once
 #include <nlohmann/json.hpp>
 #include <iostream>
+#include <iomanip>
 
 using json = nlohmann::json;
 
@@ -19,18 +20,8 @@ namespace datachecker
         std::string a_time{ "" };
 
         friend std::ostream& operator <<(std::ostream& out, const TimetableUnit& unit);
-        
-    public://static class with key shortcuts for the convenience of use
-        static class Keys
-        {
-        public:
-            static constexpr char* BUS_ID = const_cast<char* const>("bus_id");
-            static constexpr char* STOP_ID = const_cast<char* const>("stop_id");
-            static constexpr char* STOP_NAME = const_cast<char* const>("stop_name");
-            static constexpr char* NEXT_STOP = const_cast<char* const>("next_stop");
-            static constexpr char* STOP_TYPE = const_cast<char* const>("stop_type");
-            static constexpr char* A_TIME = const_cast<char* const>("a_time");
-        };
+        static const std::map<int, std::string> dict;
+   
     };
 
     void to_json(json& j, const TimetableUnit& t);

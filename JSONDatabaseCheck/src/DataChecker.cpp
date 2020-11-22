@@ -1,14 +1,10 @@
 #include "DataChecker.h"
 #include <numeric>
 #include <stdexcept>
-#if 1
-#define LOG(x,y) std::cout <<x<<"__"<<y<< std::endl;
-#else
-#endif // 0
 
 namespace datachecker
 {
-    using Key = TimetableUnit::Keys;
+    const std::string PROCESS_TERMINATED{"Process terminated"};
 
     datachecker::DataChecker::DataChecker(std::string& data)
     {
@@ -29,13 +25,27 @@ namespace datachecker
     {
         std::cout << "The following errors were found:\n";
         for (auto& obj : errors) {
-            std::cout << "Obj ID: " << obj.first << std::endl;
-            std::cout << Key::BUS_ID << sumOfErrorValues(obj, BusId) << "\n"
-                << Key::STOP_ID << sumOfErrorValues(obj, StopId) << "\n"
-                << Key::STOP_NAME << sumOfErrorValues(obj, StopName) << "\n"
-                << Key::NEXT_STOP << sumOfErrorValues(obj, NextStop) << "\n"
-                << Key::STOP_TYPE << sumOfErrorValues(obj, StopType) << "\n"
-                << Key::A_TIME << sumOfErrorValues(obj, Time) << "\n\n";
+            for (int it = BusId; it != end; it++) {
+                int currentSum = sumOfErrorValues(obj, static_cast<Error>(it));
+                if (currentSum) {
+                    std::cout << "Obj " << obj.first << " : ";
+                    std::cout << TimetableUnit::dict.at(it) << std::endl;
+                }
+            }
+        }
+    }
+
+    void DataChecker::printTimetables()
+    {
+        for (auto& pair : timetables) {
+            std::cout << pair.second << std::endl;
+        }
+    }
+
+    void DataChecker::printLines()
+    {
+        for (auto& pair : lines) {
+            std::cout << pair.second << std::endl;
         }
     }
 
@@ -44,6 +54,72 @@ namespace datachecker
         return std::count_if(obj.second.begin(), obj.second.end(), [&errorValue](Error e) { return e == errorValue; });
     }
 
+    void DataChecker::buildMapOfLines()
+    {
+        for (auto& timetable : timetables) {
+            // if current line is not on the list
+            if (lines.find(timetable.second.bus_id) == lines.end()) {
+                lines.insert({ timetable.second.bus_id, BussLine(timetable.second) });
+            }
+            else {
+                try {
+                    lines.at(timetable.second.bus_id).addTimetable(timetable.second);
+                }
+                catch (std::logic_error) {
+                    std::cout << PROCESS_TERMINATED << std::endl;
+                    break;
+                    ///
+                }
+            }  
+        }
+    }
+
+    void DataChecker::tryToAssign(json& j, TimetableUnit& tmp, const int& iterator)
+    {
+        // try to get buss id from JSON input
+        try {
+            tmp.bus_id = j[TimetableUnit::dict.at(0)].get<decltype(TimetableUnit::bus_id)>();
+
+        }
+        catch (...) {
+            insertError(iterator, BusId);
+        }
+        // try to get stop id from JSON input
+        try {
+            tmp.stop_id = j[TimetableUnit::dict.at(1)].get<decltype(TimetableUnit::stop_id)>();
+        }
+        catch (...) {
+            insertError(iterator, StopId);
+        }
+        // try to get stop name from JSON input
+        try {
+            tmp.stop_name = j[TimetableUnit::dict.at(2)].get<decltype(TimetableUnit::stop_name)>();
+        }
+        catch (...) {
+            insertError(iterator, StopName);
+        }
+        // try to get next stop id from JSON input
+        try {
+            tmp.next_stop = j[TimetableUnit::dict.at(3)].get<decltype(TimetableUnit::next_stop)>();
+        }
+        catch (...) {
+            insertError(iterator, NextStop);
+        }
+        // try to get stop type from JSON input
+        try {
+            tmp.stop_type = j[TimetableUnit::dict.at(4)].get<decltype(TimetableUnit::stop_type)>();
+        }
+        catch (...) {
+            insertError(iterator, StopType);
+        }
+        // try to get a time from JSON input
+        try {
+            tmp.a_time = j[TimetableUnit::dict.at(5)].get<decltype(TimetableUnit::a_time)>();
+        }
+        catch (...) {
+            insertError(iterator, Time);
+        }
+    }
 
     void datachecker::DataChecker::checkDataTypes(std::string& data)
     {
@@ -53,56 +129,7 @@ namespace datachecker
         // iterate through the JSON object and try to build TimetableUnit objects
         for (auto j : series) {
             TimetableUnit tmp;
-            // try to get buss id from JSON input
-            try {
-                tmp.bus_id = j[Key::BUS_ID].get<decltype(TimetableUnit::bus_id)>();
-                
-            }
-            catch (...) {
-                insertError(iterator, BusId);
-                LOG(iterator, tmp.bus_id)
-            }
-            // try to get stop id from JSON input
-            try {
-                tmp.stop_id = j[Key::STOP_ID].get<decltype(TimetableUnit::stop_id)>();
-            }
-            catch (...) {
-                insertError(iterator, StopId);
-                LOG(iterator, tmp.stop_id)
-            }
-            // try to get stop name from JSON input
-            try {
-                tmp.stop_name = j[Key::STOP_NAME].get<decltype(TimetableUnit::stop_name)>();
-            }
-            catch (...) {
-                insertError(iterator, StopName);
-                LOG(iterator, tmp.stop_name)
-            }
-            // try to get next stop id from JSON input
-            try {
-                tmp.next_stop = j[Key::NEXT_STOP].get<decltype(TimetableUnit::next_stop)>();
-            }
-            catch (...) {
-                insertError(iterator, NextStop);
-                LOG(iterator, tmp.next_stop)
-            }
-            // try to get stop type from JSON input
-            try {
-                tmp.stop_type = j[Key::STOP_TYPE].get<decltype(TimetableUnit::stop_type)>();
-            }
-            catch (...) {
-                insertError(iterator, StopType);
-                LOG(iterator, tmp.stop_type)
-            }
-            // try to get a time from JSON input
-            try {
-                tmp.a_time = j[Key::A_TIME].get<decltype(TimetableUnit::a_time)>();
-            }
-            catch (...) {
-                insertError(iterator, Time);
-                LOG(iterator, tmp.a_time)
-            }
-
+            tryToAssign(j, tmp, iterator);
             iterator++;
             if (errors.empty()) {
                 timetables.insert({ tmp.stop_id, tmp });

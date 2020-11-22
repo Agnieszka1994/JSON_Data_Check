@@ -4,9 +4,11 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\TimetableUnit.cpp" />
     <ClCompile Include="src\DataChecker.cpp" />
+    <ClCompile Include="src\BussLine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\TimetableUnit.h" />
     <ClInclude Include="src\DataChecker.h" />
+    <ClInclude Include="src\BussLine.h" />
   </ItemGroup>
 </Project>

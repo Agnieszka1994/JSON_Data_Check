@@ -3,7 +3,10 @@
 
 using namespace datachecker;
 int main() {
-
+    /*TimetableUnit testo{3, 5, "testowy przystanek", 66, "cos", "08:21"};
+    auto a = DataChecker::members[1];
+    auto b = DataChecker::members[2];
+    std::cout << typeid(b).name() << std::endl;*/
     std::string testString = R"###([
     {
         "bus_id": 128,
@@ -89,6 +92,7 @@ int main() {
 
 
     DataChecker testowy(testString);
-
-
+    testowy.printTimetables();
+    testowy.buildMapOfLines();
+    testowy.printLines();
 }

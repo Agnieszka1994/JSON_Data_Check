@@ -16,8 +16,6 @@ namespace datachecker
 		
 		void run();
 
-		//std::unique_ptr<DataChecker>
-		// create ptr to datachecker
 		// get filename from input
 		// upload data from file to datachecker
 		// run the checks

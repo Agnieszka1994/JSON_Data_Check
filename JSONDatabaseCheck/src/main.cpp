@@ -1,6 +1,7 @@
 #include "TimetableUnit.h"
 #include "DataChecker.h"
 
+
 using namespace datachecker;
 int main() {
     /*TimetableUnit testo{3, 5, "testowy przystanek", 66, "cos", "08:21"};
@@ -69,7 +70,7 @@ int main() {
         "stop_id" : 7,
         "stop_name" : "Sesame Street",
         "next_stop" : 0,
-        "stop_type" : "F",
+        "stop_type" : "O",
         "a_time" : "08:23"
     },
     {
@@ -92,7 +93,9 @@ int main() {
 
 
     DataChecker testowy(testString);
-    testowy.printTimetables();
+    //testowy.printTimetables();
     testowy.buildMapOfLines();
-    testowy.printLines();
+    //testowy.printLines();
+    testowy.checkSyntax();
+    testowy.printLinesInfo();
 }

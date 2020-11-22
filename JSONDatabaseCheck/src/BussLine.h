@@ -10,6 +10,7 @@ namespace datachecker
 		BussLine() = delete;
 		BussLine(TimetableUnit);
 		void addTimetable(TimetableUnit t);
+		void printLineInfo();
 		friend std::ostream& operator <<(std::ostream& out, const BussLine& unit);
 	private:
 		int lineId;

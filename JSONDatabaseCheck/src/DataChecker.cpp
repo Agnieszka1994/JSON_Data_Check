@@ -1,14 +1,22 @@
 #include "DataChecker.h"
-#include <numeric>
-#include <stdexcept>
+
 
 namespace datachecker
 {
-    const std::string PROCESS_TERMINATED{"Process terminated"};
+    const std::string PROCESS_TERMINATED{"\nProcess terminated\n"};
+    const std::string ERRORS_FOUND{ "The following errors were found:\n" };
+    const std::string CHECKING_DATA{ "Data types check... Please wait...\n" };
+    const std::string DATA_TYPES_ERROR{ "Incorrect data types found! Checking aborted.\n" };
+    const std::string DATA_TYPES_CORRECT{ "Data Types Correct\n" };
+    const std::string CHECKING_SYNTAX{ "Syntax check...\n" };
+    const std::string INCORRECT_SYNTAX{ "Incorrect Synatx!\n Stop_name, Stop_type or Time format did not meet the requirements!\n" };
+    const std::string SYNTAX_CORRECT{"Syntax correct!\n"};
+    const std::string LINE_NAMES{ "Line names and number of stops:\n" };
 
     datachecker::DataChecker::DataChecker(std::string& data)
     {
-        checkDataTypes(data);
+        uploadData(data);
+        checkDataTypes();
     }
 
     void datachecker::DataChecker::insertError(int objId, Error e)
@@ -21,9 +29,14 @@ namespace datachecker
         }
     }
 
+    void DataChecker::uploadData(std::string& data)
+    {
+        series = json::parse(data);
+    }
+
     void datachecker::DataChecker::printErrors()
     {
-        std::cout << "The following errors were found:\n";
+        std::cout << ERRORS_FOUND;
         for (auto& obj : errors) {
             for (int it = BusId; it != end; it++) {
                 int currentSum = sumOfErrorValues(obj, static_cast<Error>(it));
@@ -42,10 +55,11 @@ namespace datachecker
         }
     }
 
-    void DataChecker::printLines()
+    void DataChecker::printLinesInfo()
     {
-        for (auto& pair : lines) {
-            std::cout << pair.second << std::endl;
+        std::cout << LINE_NAMES;
+        for (auto& line : lines) {
+            line.second.printLineInfo();
         }
     }
 
@@ -65,10 +79,9 @@ namespace datachecker
                 try {
                     lines.at(timetable.second.bus_id).addTimetable(timetable.second);
                 }
-                catch (std::logic_error) {
-                    std::cout << PROCESS_TERMINATED << std::endl;
-                    break;
-                    ///
+                catch (std::exception& e) {
+                    std::cout << e.what();
+                    break; 
                 }
             }  
         }
@@ -121,10 +134,9 @@ namespace datachecker
         }
     }
 
-    void datachecker::DataChecker::checkDataTypes(std::string& data)
+    void datachecker::DataChecker::checkDataTypes()
     {
-        json series = json::parse(data);
-        //vector<TimetableUnit> time_vec(series);
+        std::cout << CHECKING_DATA;
         int iterator{ 0 };
         // iterate through the JSON object and try to build TimetableUnit objects
         for (auto j : series) {
@@ -137,6 +149,28 @@ namespace datachecker
         }
         if (!errors.empty()) {
             printErrors();
+            throw std::invalid_argument(DATA_TYPES_ERROR);
+        }
+    }
+    void DataChecker::checkSyntax()
+    {
+        for (auto timetable : timetables) {
+            if (!std::regex_match(timetable.second.stop_name, std::regex("^[A-Z][A-Za-z ]+ (Road|Avenue|Boulevard|Street)$"))) {
+                insertError(timetable.first, StopName);
+            }
+            if (!std::regex_match(timetable.second.stop_type, std::regex("^[SOF]$|^$"))) {
+                insertError(timetable.first, StopName);
+            }
+            if (!std::regex_match(timetable.second.a_time, std::regex("^(0[1-9]|1[0-9]|2[0-3]):[0-5][0-9]$"))) {
+                insertError(timetable.first, StopName);
+            }
+        }
+        if (!errors.empty()) {
+            printErrors();
+            throw std::invalid_argument(INCORRECT_SYNTAX);
+        }
+        else {
+            std::cout << SYNTAX_CORRECT << std::endl;
         }
     }
 } // namespace datachecker

@@ -163,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="src\BussLine.h" />
     <ClInclude Include="src\DataChecker.h" />
+    <ClInclude Include="src\MainMenu.h" />
     <ClInclude Include="src\TimetableUnit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

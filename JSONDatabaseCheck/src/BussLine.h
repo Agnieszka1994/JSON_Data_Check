@@ -12,10 +12,9 @@ namespace datachecker
 		void addTimetable(TimetableUnit t);
 		void printLineInfo();
 		friend std::ostream& operator <<(std::ostream& out, const BussLine& unit);
-	private:
 		int lineId;
 		int startStop{-1};
 		int finalStop{-1};
-		std::unordered_multimap<int,TimetableUnit> stops;
+		std::unordered_map<int,TimetableUnit> stops;
 	};
 }

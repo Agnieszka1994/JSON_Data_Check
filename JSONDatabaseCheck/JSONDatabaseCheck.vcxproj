@@ -158,6 +158,7 @@
     <ClCompile Include="src\BussLine.cpp" />
     <ClCompile Include="src\DataChecker.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MainMenu.cpp" />
     <ClCompile Include="src\TimetableUnit.cpp" />
   </ItemGroup>
   <ItemGroup>

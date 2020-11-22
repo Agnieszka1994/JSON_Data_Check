@@ -5,6 +5,7 @@
     <ClCompile Include="src\TimetableUnit.cpp" />
     <ClCompile Include="src\DataChecker.cpp" />
     <ClCompile Include="src\BussLine.cpp" />
+    <ClCompile Include="src\MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\TimetableUnit.h" />

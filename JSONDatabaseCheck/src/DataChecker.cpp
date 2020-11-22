@@ -63,6 +63,16 @@ namespace datachecker
         }
     }
 
+    void DataChecker::printSpecialStops()
+    {
+        // start stops
+        printStartStops();
+        // transfer stops
+
+        // finnish stops
+        printFinishStops();
+    }
+
     int datachecker::DataChecker::sumOfErrorValues(const std::pair<int, std::vector<Error>>& obj, Error errorValue)
     {
         return std::count_if(obj.second.begin(), obj.second.end(), [&errorValue](Error e) { return e == errorValue; });
@@ -84,6 +94,22 @@ namespace datachecker
                     break; 
                 }
             }  
+        }
+    }
+
+    void DataChecker::addStop(int id, std::string name, std::unordered_map<int, std::string>& container)
+    {
+        if (container.find(id) == container.end())
+        {
+            container.insert({ id, name });
+        }
+    }
+
+    void DataChecker::addTransferStop(int id, std::string name)
+    {
+        if (TransferStops.find(id) == TransferStops.end())
+        {
+            TransferStops.insert({ id, name });
         }
     }
 
@@ -142,7 +168,15 @@ namespace datachecker
         for (auto j : series) {
             TimetableUnit tmp;
             tryToAssign(j, tmp, iterator);
+            // adding the current stop to the appropriate container
+            if (tmp.stop_type == "F") {
+                addStop(tmp.stop_id, tmp.stop_name, FinishStops);
+            }
+            if (tmp.stop_type == "S") {
+                addStop(tmp.stop_id, tmp.stop_name, StartStops);
+            }
             iterator++;
+            // if no errors detected add to container "timetables"
             if (errors.empty()) {
                 timetables.insert({ tmp.stop_id, tmp });
             }
@@ -150,6 +184,9 @@ namespace datachecker
         if (!errors.empty()) {
             printErrors();
             throw std::invalid_argument(DATA_TYPES_ERROR);
+        }
+        else {
+            std::cout << DATA_TYPES_CORRECT;
         }
     }
     void DataChecker::checkSyntax()
@@ -170,8 +207,27 @@ namespace datachecker
             throw std::invalid_argument(INCORRECT_SYNTAX);
         }
         else {
-            std::cout << SYNTAX_CORRECT << std::endl;
+            std::cout << SYNTAX_CORRECT;
         }
+    }
+
+    void DataChecker::printStartStops()
+    {
+        std::cout << "Start stops: ";
+        printStops(StartStops);
+    }
+
+    void DataChecker::printFinishStops()
+    {
+        std::cout << "Finish stops: ";
+        printStops(FinishStops);
+    }
+    void DataChecker::printStops(std::unordered_map<int, std::string> stops) {
+        std::cout << stops.size() << " [";
+        for (auto stop : stops) {
+            std::cout << "'" << stop.second << "', ";
+        }
+        std::cout << "\b\b]" << std::endl;
     }
 } // namespace datachecker
 

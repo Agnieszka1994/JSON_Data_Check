@@ -98,4 +98,5 @@ int main() {
     //testowy.printLines();
     testowy.checkSyntax();
     testowy.printLinesInfo();
+    testowy.printSpecialStops();
 }

@@ -1,5 +1,7 @@
 #include "DataChecker.h"
-
+#if 1
+#define LOG(a,b) std::cout<<a<<" "<<b
+#endif
 
 namespace datachecker
 {
@@ -9,10 +11,12 @@ namespace datachecker
     const std::string DATA_TYPES_ERROR{ "Incorrect data types found! Checking aborted.\n" };
     const std::string DATA_TYPES_CORRECT{ "Data Types Correct\n" };
     const std::string CHECKING_SYNTAX{ "Syntax check...\n" };
-    const std::string INCORRECT_SYNTAX{ "Incorrect Synatx!\n Stop_name, Stop_type or Time format did not meet the requirements!\n" };
+    const std::string INCORRECT_SYNTAX{ "Incorrect Synatx!\nStop_name, Stop_type or Time format did not meet the requirements!\n" };
     const std::string SYNTAX_CORRECT{"Syntax correct!\n"};
     const std::string LINE_NAMES{ "Line names and number of stops:\n" };
     const std::string MISSING_STOP{ "There is no start or end stop for the line: " };
+    const std::string TIME_TEST{ "Arrival time test:\n" };
+    const std::string TIME_TEST_SUCCESS{ "Arrival times OK\n" };
     datachecker::DataChecker::DataChecker(std::string& data)
     {
         uploadData(data);
@@ -34,11 +38,67 @@ namespace datachecker
         series = json::parse(data);
     }
 
+    bool DataChecker::compareTimes(std::tm a, std::tm b, std::function<bool(std::tm, std::tm)> fn)
+    {
+        return fn(a, b);
+    }
+
+    std::tm DataChecker::convertStringToTime(std::string str)
+    {
+        struct std::tm tm {};
+        std::istringstream ss(str);
+        ss >> std::get_time(&tm, "%H:%M");
+        return tm;
+    }
+
+    void DataChecker::checkAllArrivalTimes()
+    {
+        for (auto& line : lines) {
+            try{
+                checkArrivalTimesForLine(line.second);
+            }
+            catch (const std::logic_error&){
+                throw;
+            }   
+        }
+        std::cout << TIME_TEST_SUCCESS;
+    }
+
+    void DataChecker::checkArrivalTimesForLine(BussLine& line)
+    {
+        
+        TimetableUnit previousStop{ line.stops[line.startStop] };
+        TimetableUnit currentStop{ line.stops[previousStop.next_stop] };
+        while (true)
+        {
+            std::tm prevTime{ convertStringToTime(previousStop.a_time) };
+            std::tm currTime{ convertStringToTime(currentStop.a_time) };
+            auto comp = [](std::tm a, std::tm b) ->bool 
+            { return (a.tm_hour < b.tm_hour) 
+                || (a.tm_hour <= b.tm_hour && a.tm_min < b.tm_min); 
+            };
+
+            if (!compareTimes(prevTime, currTime, comp)) {
+      
+                std::string msg{ "bus_id line " + std::to_string(currentStop.bus_id)
+                    + ": wrong time on station " + currentStop.stop_name };
+                throw std::logic_error(msg);
+            }
+            try {
+                previousStop = currentStop;
+                currentStop = line.stops.at((currentStop.next_stop));
+            }
+            catch (std::out_of_range&) {
+                break;
+            }
+        }
+    }
+
     void DataChecker::checkSpecialStops()
     {
         for (auto line : lines) {
             if (line.second.startStop == -1 || line.second.finalStop == -1) {
-                std::string msg = MISSING_STOP + std::to_string(line.second.lineId);
+                std::string msg{ MISSING_STOP + std::to_string(line.second.lineId) };
                 throw std::logic_error(msg);
             }
         }
@@ -49,7 +109,7 @@ namespace datachecker
         std::cout << ERRORS_FOUND;
         for (auto& obj : errors) {
             for (int it = BusId; it != end; it++) {
-                int currentSum = sumOfErrorValues(obj, static_cast<Error>(it));
+                int currentSum{ sumOfErrorValues(obj, static_cast<Error>(it)) };
                 if (currentSum) {
                     std::cout << "Obj " << obj.first << " : ";
                     std::cout << TimetableUnit::dict.at(it) << std::endl;
@@ -96,9 +156,8 @@ namespace datachecker
                 try {
                     lines.at(timetable.second.bus_id).addTimetable(timetable.second);
                 }
-                catch (std::exception& e) {
-                    std::cout << e.what();
-                    break; 
+                catch (std::exception&) {
+                    throw;
                 }
             }  
         }

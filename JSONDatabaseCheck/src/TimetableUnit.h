@@ -21,7 +21,8 @@ namespace datachecker
 
         friend std::ostream& operator <<(std::ostream& out, const TimetableUnit& unit);
         static const std::map<int, std::string> dict;
-   
+        bool operator==(const TimetableUnit& other);
+        bool operator!=(const TimetableUnit& other);
     };
 
     void to_json(json& j, const TimetableUnit& t);

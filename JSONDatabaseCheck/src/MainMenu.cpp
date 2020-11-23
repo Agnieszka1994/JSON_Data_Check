@@ -16,7 +16,14 @@ namespace datachecker
 		for (auto& pair: menuFunc)
 		{
 			auto& func{ pair.second };
-			(*checker.*func)();
+			try {
+				(*checker.*func)();
+			}
+			catch (std::exception& e) {
+				std::cout << e.what() << std::flush;
+				break;
+			}
+			Sleep(1000);
 		}
 	}
 

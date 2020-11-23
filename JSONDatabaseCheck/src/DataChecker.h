@@ -2,6 +2,8 @@
 #include "TimetableUnit.h"
 #include "BussLine.h"
 #include <numeric>
+#include <sstream>
+#include <functional>
 #include <stdexcept>
 #include <regex>
 #include <set>
@@ -33,6 +35,10 @@ namespace datachecker
     private:
         friend class MainMenu;
         void uploadData(std::string& data);
+        bool compareTimes(std::tm a, std::tm b, std::function<bool(std::tm, std::tm)>);
+        std::tm convertStringToTime(std::string);
+        void checkAllArrivalTimes();
+        void checkArrivalTimesForLine(BussLine& line);
         void checkSpecialStops();
         void buildMapOfLines();
         void findTransferlStops();

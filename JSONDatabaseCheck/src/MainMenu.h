@@ -2,6 +2,12 @@
 #include <unordered_map>
 #include "DataChecker.h"
 
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 namespace datachecker
 {
 	const std::string WRONG_INPUT{ "Wrong input type! Please try again:\n" };
@@ -28,8 +34,10 @@ namespace datachecker
 			{2, &DataChecker::checkSyntax},
 			{3, &DataChecker::buildMapOfLines},
 			{4, &DataChecker::findTransferlStops},
-			{5, &DataChecker::printLinesInfo},
-			{6, &DataChecker::printSpecialStops}
+			{5, &DataChecker::checkSpecialStops},
+			{6, &DataChecker::printLinesInfo},
+			{7, &DataChecker::printSpecialStops},
+			{8,& DataChecker::checkAllArrivalTimes}
 
 			//{5, nullptr}
 		

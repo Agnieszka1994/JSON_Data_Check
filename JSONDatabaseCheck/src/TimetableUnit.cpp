@@ -43,5 +43,13 @@ namespace datachecker
         j.at(TimetableUnit::dict.at(4)).get_to(t.stop_type);
         j.at(TimetableUnit::dict.at(5)).get_to(t.a_time);
     }
+    bool TimetableUnit::operator==(const TimetableUnit& other)
+    {
+        return stop_id == other.stop_id;
+    }
+    bool TimetableUnit::operator!=(const TimetableUnit& other)
+    {
+        return stop_id != other.stop_id;;
+    }
 }
 

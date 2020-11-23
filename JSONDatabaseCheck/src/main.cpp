@@ -21,7 +21,7 @@ int main() {
         "stop_name" : "Elm Street",
         "next_stop" : 5,
         "stop_type" : "O",
-        "a_time" : "08:23"
+        "a_time" : "08:27"
     },
     {
         "bus_id": 128,
@@ -29,7 +29,7 @@ int main() {
         "stop_name" : "Fifth Avenue",
         "next_stop" : 7,
         "stop_type" : "O",
-        "a_time" : "08:23"
+        "a_time" : "08:35"
     },
     {
         "bus_id": 128,
@@ -37,7 +37,7 @@ int main() {
         "stop_name" : "Sesame Street",
         "next_stop" : 0,
         "stop_type" : "F",
-        "a_time" : "08:23"
+        "a_time" : "08:50"
     },
     {
         "bus_id": 256,
@@ -45,7 +45,7 @@ int main() {
         "stop_name" : "Pilotow Street",
         "next_stop" : 3,
         "stop_type" : "S",
-        "a_time" : "08:23"
+        "a_time" : "08:15"
     },
     {
         "bus_id": 256,
@@ -61,7 +61,7 @@ int main() {
         "stop_name" : "Sunset Boulevard",
         "next_stop" : 7,
         "stop_type" : "O",
-        "a_time" : "08:23"
+        "a_time" : "08:45"
     },
     {
         "bus_id": 256,
@@ -69,7 +69,7 @@ int main() {
         "stop_name" : "Sesame Street",
         "next_stop" : 0,
         "stop_type" : "O",
-        "a_time" : "08:23"
+        "a_time" : "09:12"
     },
     {
         "bus_id": 512,
@@ -77,7 +77,7 @@ int main() {
         "stop_name" : "Bourbon Street",
         "next_stop" : 6,
         "stop_type" : "S",
-        "a_time" : "08:23"
+        "a_time" : "08:13"
     },
     {
         "bus_id": 512,
@@ -85,10 +85,11 @@ int main() {
         "stop_name" : "Sunset Boulevard",
         "next_stop" : 0,
         "stop_type" : "F",
-        "a_time" : "08:23"
+        "a_time" : "08:16"
     }
     ])###";
 
+    
     MainMenu menu(testString);
     menu.run();
 }

@@ -30,3 +30,5 @@ The checks are completed following the below criteria:
 - Transfer, start, and end stops cannot be on demand.
 
 **The diagram of the bus lines is presented below**
+
+[![img](https://github.com/Agnieszka1994/JSON_Data_Check/blob/main/img/diagram.png)](https://github.com/Agnieszka1994/JSON_Data_Check/blob/main/img/)

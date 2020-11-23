@@ -6,6 +6,8 @@ This program takes in a JSON-like file which is a representation of a bus compan
 
 The checks are completed following the below criteria:
 
+**1. Data structure**
+
 |**Filed name**|**Description**   |**Type** |**Format**     |**Other**| 
 |:------------ |:-----------------|:--------|:--------------|:-------|
 |`bus_id`      |name of the buss line|Integer|              |Required|
@@ -14,3 +16,17 @@ The checks are completed following the below criteria:
 |`next_stop`   |Id of the next stop|Integer  |              |Required|
 |`stop_type`   |Stop type          |Character| S (for starting stop)<br>F(for final stop)<br>O(for stop on demand) ||
 |`a_time`      |Arrive time       |String   |HH:MM (24 hour format)|Required |
+
+**2. Special stops**
+
+|**Stop type**|**Description**   |
+|:----------- |:-----------------|
+|`Start`      |The stop where the line starts.|
+|`Transfer`   |A stop where the traveler can change<br>to another line.|
+|`Finish`     |The stop where the line ends.|
+
+**3. General rules**
+- Stops on a given line have increasing arrival times.
+- Transfer, start, and end stops cannot be on demand.
+
+**The diagram of the bus lines is presented below**

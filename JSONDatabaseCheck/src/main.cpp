@@ -20,7 +20,7 @@ int main() {
         "stop_id" : 3,
         "stop_name" : "Elm Street",
         "next_stop" : 5,
-        "stop_type" : "O",
+        "stop_type" : "",
         "a_time" : "08:27"
     },
     {
@@ -28,7 +28,7 @@ int main() {
         "stop_id" : 5,
         "stop_name" : "Fifth Avenue",
         "next_stop" : 7,
-        "stop_type" : "O",
+        "stop_type" : "",
         "a_time" : "08:35"
     },
     {
@@ -60,7 +60,7 @@ int main() {
         "stop_id" : 6,
         "stop_name" : "Sunset Boulevard",
         "next_stop" : 7,
-        "stop_type" : "O",
+        "stop_type" : "",
         "a_time" : "08:45"
     },
     {
@@ -68,7 +68,7 @@ int main() {
         "stop_id" : 7,
         "stop_name" : "Sesame Street",
         "next_stop" : 0,
-        "stop_type" : "O",
+        "stop_type" : "",
         "a_time" : "09:12"
     },
     {

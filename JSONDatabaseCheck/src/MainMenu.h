@@ -21,12 +21,6 @@ namespace datachecker
 		MainMenu(MainMenu&&) = delete;
 		
 		void run();
-
-		// get filename from input
-		// upload data from file to datachecker
-		// run the checks
-		// if checks completed - display options: buss lines info, print timetables
-		// display info on a given line number
 	
 		void displayMenu();
 		std::unordered_map<int, void(DataChecker::*)()> menuFunc{
@@ -37,8 +31,8 @@ namespace datachecker
 			{5, &DataChecker::checkSpecialStops},
 			{6, &DataChecker::printLinesInfo},
 			{7, &DataChecker::printSpecialStops},
-			{8,& DataChecker::checkAllArrivalTimes}
-
+			{8, &DataChecker::checkAllArrivalTimes},
+			{9, &DataChecker::onDemandCheck}
 			//{5, nullptr}
 		
 		};
@@ -46,6 +40,8 @@ namespace datachecker
 		template<typename T>
 		static T getInput();
 	private:
+		void runCheck();
+		void displayMenu();
 		std::unique_ptr<DataChecker> checker = std::make_unique<DataChecker>();
 	};
 

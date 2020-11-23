@@ -17,6 +17,8 @@ namespace datachecker
     const std::string MISSING_STOP{ "There is no start or end stop for the line: " };
     const std::string TIME_TEST{ "Arrival time test:\n" };
     const std::string TIME_TEST_SUCCESS{ "Arrival times OK\n" };
+    const std::string ON_DEMAND_TEST{ "On demand stops test: " };
+    const std::string WRONG_STOP_TYPES{ "Wrong stop type: " };
     datachecker::DataChecker::DataChecker(std::string& data)
     {
         uploadData(data);
@@ -53,6 +55,7 @@ namespace datachecker
 
     void DataChecker::checkAllArrivalTimes()
     {
+        std::cout << TIME_TEST;
         for (auto& line : lines) {
             try{
                 checkArrivalTimesForLine(line.second);
@@ -73,12 +76,13 @@ namespace datachecker
         {
             std::tm prevTime{ convertStringToTime(previousStop.a_time) };
             std::tm currTime{ convertStringToTime(currentStop.a_time) };
-            auto comp = [](std::tm a, std::tm b) ->bool 
+
+            auto rule = [](std::tm a, std::tm b) ->bool 
             { return (a.tm_hour < b.tm_hour) 
                 || (a.tm_hour <= b.tm_hour && a.tm_min < b.tm_min); 
             };
 
-            if (!compareTimes(prevTime, currTime, comp)) {
+            if (!compareTimes(prevTime, currTime, rule)) {
       
                 std::string msg{ "bus_id line " + std::to_string(currentStop.bus_id)
                     + ": wrong time on station " + currentStop.stop_name };
@@ -101,6 +105,29 @@ namespace datachecker
                 std::string msg{ MISSING_STOP + std::to_string(line.second.lineId) };
                 throw std::logic_error(msg);
             }
+        }
+    }
+
+    void DataChecker::onDemandCheck()
+    {
+        std::cout << ON_DEMAND_TEST;
+        std::unordered_map<int, std::string> wrongTypeStops{};
+        for (auto timetable : timetables) {
+            TimetableUnit current = timetable.second;
+            if(current.stop_type == "O" && (
+               TransferStops.find(current.stop_id) != TransferStops.end()
+            || StartStops.find(current.stop_id) != StartStops.end()
+            || FinishStops.find(current.stop_id) != FinishStops.end())){
+                wrongTypeStops.insert({ current.stop_id, current.stop_name });
+            }
+        }
+        if (!wrongTypeStops.empty()) {
+            std::cout << WRONG_STOP_TYPES;
+            printStops(wrongTypeStops);
+            throw std::logic_error("");
+        }
+        else{
+            std::cout << "OK" << std::endl;
         }
     }
 

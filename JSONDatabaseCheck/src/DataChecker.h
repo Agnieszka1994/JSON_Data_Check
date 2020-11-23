@@ -40,6 +40,7 @@ namespace datachecker
         void checkAllArrivalTimes();
         void checkArrivalTimesForLine(BussLine& line);
         void checkSpecialStops();
+        void onDemandCheck();
         void buildMapOfLines();
         void findTransferlStops();
         void addStop(int id, std::string name, std::unordered_map<int, std::string>& container);

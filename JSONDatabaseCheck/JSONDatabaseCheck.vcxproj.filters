@@ -12,5 +12,6 @@
     <ClInclude Include="src\DataChecker.h" />
     <ClInclude Include="src\BussLine.h" />
     <ClInclude Include="src\MainMenu.h" />
+    <ClInclude Include="src\ConsoleClear.h" />
   </ItemGroup>
 </Project>

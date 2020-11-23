@@ -163,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BussLine.h" />
+    <ClInclude Include="src\ConsoleClear.h" />
     <ClInclude Include="src\DataChecker.h" />
     <ClInclude Include="src\MainMenu.h" />
     <ClInclude Include="src\TimetableUnit.h" />

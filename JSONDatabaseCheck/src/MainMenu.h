@@ -1,12 +1,10 @@
 #pragma once
 #include <unordered_map>
+#include <iostream>
+#include <stdexcept>
+#include <fstream>
 #include "DataChecker.h"
 
-#ifdef _WIN32
-#include <Windows.h>
-#else
-#include <unistd.h>
-#endif
 
 namespace datachecker
 {
@@ -17,13 +15,13 @@ namespace datachecker
 	public:
 		MainMenu();
 		MainMenu(std::string& data);
+		MainMenu(json& data);
 		MainMenu(MainMenu&) = delete;
 		MainMenu(MainMenu&&) = delete;
 		
 		void run();
 	
-		void displayMenu();
-		std::unordered_map<int, void(DataChecker::*)()> menuFunc{
+		std::unordered_map<int, void(DataChecker::*)()> checkFunc{
 			{1, &DataChecker::checkDataTypes},
 			{2, &DataChecker::checkSyntax},
 			{3, &DataChecker::buildMapOfLines},
@@ -32,16 +30,22 @@ namespace datachecker
 			{6, &DataChecker::printLinesInfo},
 			{7, &DataChecker::printSpecialStops},
 			{8, &DataChecker::checkAllArrivalTimes},
-			{9, &DataChecker::onDemandCheck}
-			//{5, nullptr}
-		
+			{9, &DataChecker::onDemandCheck}	
 		};
-
+		std::unordered_map<int, void(DataChecker::*)()> menuFunc{
+			{1, &DataChecker::printTimetables},
+			{2, &DataChecker::printLinesInfo},
+			{3, &DataChecker::printSpecialStops},
+			{4, &DataChecker::printTransferStops},
+			{5, &DataChecker::printFinishStops},
+			{6, &DataChecker::printStartStops}
+		};
 		template<typename T>
 		static T getInput();
 	private:
 		void runCheck();
-		void displayMenu();
+		void runMenuFunc(int);
+		void displayMenu() const;
 		std::unique_ptr<DataChecker> checker = std::make_unique<DataChecker>();
 	};
 

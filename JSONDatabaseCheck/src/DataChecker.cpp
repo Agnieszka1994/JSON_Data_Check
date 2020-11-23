@@ -40,6 +40,11 @@ namespace datachecker
         series = json::parse(data);
     }
 
+    void DataChecker::uploadData(json& data)
+    {
+        series = data;
+    }
+
     bool DataChecker::compareTimes(std::tm a, std::tm b, std::function<bool(std::tm, std::tm)> fn)
     {
         return fn(a, b);

@@ -1,12 +1,4 @@
-#include "MainMenu.h"
-
-using namespace datachecker;
-int main() {
-    /*TimetableUnit testo{3, 5, "testowy przystanek", 66, "cos", "08:21"};
-    auto a = DataChecker::members[1];
-    auto b = DataChecker::members[2];
-    std::cout << typeid(b).name() << std::endl;*/
-    std::string testString = R"###([
+[
     {
         "bus_id": 128,
         "stop_id" : 1,
@@ -87,10 +79,4 @@ int main() {
         "stop_type" : "F",
         "a_time" : "08:16"
     }
-    ])###";
-
-   
-    MainMenu menu;
-    menu.run();
-
-}
+    ]

@@ -35,6 +35,7 @@ namespace datachecker
     private:
         friend class MainMenu;
         void uploadData(std::string& data);
+        void uploadData(json& data);
         bool compareTimes(std::tm a, std::tm b, std::function<bool(std::tm, std::tm)>);
         std::tm convertStringToTime(std::string);
         void checkAllArrivalTimes();

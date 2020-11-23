@@ -6,11 +6,11 @@ This program takes in a JSON-like file which is a representation of a bus compan
 
 The checks are completed following the below criteria:
 
-|Filed name    | Description       |Type     |Format          |Other    | 
-|:------------ |:-----------------:|:-------:|:--------------:|--------:|
-|`bus_id`      |name of the buss line|Integer|                 |Required|
-|`stop_id`     |centered           |Integer  |                 |Required| 
+|Filed name    | Description      |Type     |Format         |Other   | 
+|:------------ |:-----------------|:--------|:--------------|:-------|
+|`bus_id`      |name of the buss line|Integer|              |Required|
+|`stop_id`     |centered           |Integer  |              |Required| 
 |`stop_name`   |are neat           |String   |**[proper name][suffix]**<br>Suffix: Road/Avenue/Boulevard/Street<br>Proper name starts with a capital letter.|Required|
-|`next_stop`   |id of the next stop|Integer  |                 |Required|
-|`stop_type`   |stop type          |Character| S (for starting stop)<br\>F(for final stop) O(for stop on demand) ||
+|`next_stop`   |id of the next stop|Integer  |              |Required|
+|`stop_type`   |stop type          |Character| S (for starting stop)<br>F(for final stop) O(for stop on demand) ||
 |`a_time`      | arrive_time       |String   |HH:MM (24 hour format)|Required |

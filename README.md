@@ -1,4 +1,5 @@
-https://github.com/nlohmann/json
+
+This project was created thanks to the [About JSON for Modern C++](https://github.com/nlohmann/json) library.
 
 # About 
 This repo is a remake of a Hyperskill project **Easy Riders Bus Company** written in `C++`.

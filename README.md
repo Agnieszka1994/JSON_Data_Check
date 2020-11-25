@@ -185,7 +185,7 @@ bus_id: 128, stops: 4
 bus_id: 256, stops: 4
 bus_id: 512, stops: 2
 ```
-***Display all special stops**
+**Display all special stops**
 ```
 Start stops: 3 ['Prospekt Avenue', 'Pilotow Street', 'Bourbon Street']
 Transfer stops: 3 ['Elm Street', 'Sesame Street', 'Sunset Boulevard']

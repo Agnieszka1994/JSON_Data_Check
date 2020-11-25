@@ -5,6 +5,7 @@ namespace datachecker
 {
 	const std::string ENTER_FILE{ "Please enter file name:\n" };
 	const std::string NO_OPTION{ "No such option available!\n" };
+	const std::string FILE_EXTENSION{ "File extension missing or incorrect!\n" };
 
 	datachecker::MainMenu::MainMenu()
 	{
@@ -35,10 +36,11 @@ namespace datachecker
 		}
 	}
 
-	void MainMenu::runMenuFunc(int option)
+	void MainMenu::runMenuFunc()
 	{
-		if (menuFunc.find(option) != menuFunc.end()) {
-			auto& func{ menuFunc.at(option) };
+		int choice = getInput<int>();
+		if (menuFunc.find(choice) != menuFunc.end()) {
+			auto& func{ menuFunc.at(choice) };
 			try {
 				(*checker.*func)();
 			}
@@ -54,7 +56,7 @@ namespace datachecker
 	void MainMenu::run() // to be refactored !!!! 
 	{
 		std::cout << ENTER_FILE << std::flush;
-		std::string file = getInput<std::string>();
+		std::string file = getFileName();
 		std::ifstream jsonFile;
 		jsonFile.open(file, std::ifstream::in);
 		if (!jsonFile.is_open()) {
@@ -78,8 +80,7 @@ namespace datachecker
 			while (true) {
 				Clear();
 				displayMenu();
-				int choice = getInput<int>();
-				runMenuFunc(choice);
+				runMenuFunc();
 				std::cin.ignore(INT_MAX, '\n');
 				std::cin.get();
 			}
@@ -96,6 +97,16 @@ namespace datachecker
 		std::cout << "5. Finish Stops" << std::endl;
 		std::cout << "6. Start Stops" << std::endl;
 		std::cout << "0. Exit" << std::endl;
+	}
+	std::string MainMenu::getFileName()
+	{
+		std::string input = getInput<std::string>();
+		while (input.find(".json") != (input.size() - 5) || input.find(".json") == std::string::npos)
+		{
+			std::cout << FILE_EXTENSION;
+			input = getInput<std::string>();
+		}
+		return input;
 	}
 }
 

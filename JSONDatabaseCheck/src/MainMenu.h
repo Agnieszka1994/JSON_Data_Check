@@ -44,8 +44,9 @@ namespace datachecker
 		static T getInput();
 	private:
 		void runCheck();
-		void runMenuFunc(int);
+		void runMenuFunc();
 		void displayMenu() const;
+		std::string getFileName();
 		std::unique_ptr<DataChecker> checker = std::make_unique<DataChecker>();
 	};
 

@@ -18,9 +18,9 @@ namespace datachecker
 		MainMenu(json& data);
 		MainMenu(MainMenu&) = delete;
 		MainMenu(MainMenu&&) = delete;
-		
+
 		void run();
-	
+
 		std::unordered_map<int, void(DataChecker::*)()> checkFunc{
 			{1, &DataChecker::checkDataTypes},
 			{2, &DataChecker::checkSyntax},
@@ -30,7 +30,7 @@ namespace datachecker
 			{6, &DataChecker::printLinesInfo},
 			{7, &DataChecker::printSpecialStops},
 			{8, &DataChecker::checkAllArrivalTimes},
-			{9, &DataChecker::onDemandCheck}	
+			{9, &DataChecker::onDemandCheck}
 		};
 		std::unordered_map<int, void(DataChecker::*)()> menuFunc{
 			{1, &DataChecker::printTimetables},

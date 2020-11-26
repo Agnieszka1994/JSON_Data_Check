@@ -23,7 +23,7 @@ namespace datachecker
 
 	void datachecker::MainMenu::runCheck()
 	{
-		for (auto& pair: checkFunc)
+		for (auto& pair : checkFunc)
 		{
 			auto& func{ pair.second };
 			try {
@@ -39,6 +39,8 @@ namespace datachecker
 	void MainMenu::runMenuFunc()
 	{
 		int choice = getInput<int>();
+		if (choice == 0)
+			exit(0);
 		if (menuFunc.find(choice) != menuFunc.end()) {
 			auto& func{ menuFunc.at(choice) };
 			try {
@@ -108,5 +110,5 @@ namespace datachecker
 		}
 		return input;
 	}
-}
+} // namespace datachecker
 
